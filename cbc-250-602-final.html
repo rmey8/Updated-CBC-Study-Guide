@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>250-602 CBC — Technical Specialist Study Guide</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --red: #A32D2D; --red-light: #FCEBEB; --red-dark: #501313; --red-mid: #E24B4A;
+    --bg: #f8f7f5; --surface: #fff; --border: rgba(0,0,0,0.09);
+    --text: #1a1a1a; --text-muted: #666; --text-hint: #999;
+    --success: #3B6D11; --success-bg: #EAF3DE;
+    --danger: #A32D2D; --danger-bg: #FCEBEB;
+    --amber: #854F0B; --amber-bg: #FAEEDA;
+    --info: #185FA5; --info-bg: #E6F1FB;
+    --nav-bg: #1C3557;
+    --radius: 8px; --radius-lg: 12px;
+    --font: system-ui, -apple-system, sans-serif;
+    --mono: 'Courier New', monospace;
+  }
+  body { font-family: var(--font); background: var(--bg); color: var(--text); font-size: 15px; line-height: 1.6; }
+  .header { background: var(--red-dark); color: white; padding: 14px 24px; display: flex; align-items: center; gap: 14px; position: sticky; top: 0; z-index: 200; border-bottom: 3px solid var(--red-mid); }
+  .header-badge { background: var(--red-mid); font-family: var(--mono); font-size: 11px; padding: 3px 8px; border-radius: 4px; white-space: nowrap; }
+  .header h1 { font-size: 15px; font-weight: 500; }
+  .header-sub { font-size: 12px; color: rgba(255,255,255,0.5); margin-top: 1px; }
+  .top-nav { display: flex; background: var(--surface); border-bottom: 1px solid var(--border); padding: 0 24px; position: sticky; top: 57px; z-index: 199; }
+  .top-tab { padding: 11px 18px; border: none; background: none; font-family: var(--font); font-size: 14px; color: var(--text-muted); cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -1px; transition: all 0.15s; white-space: nowrap; }
+  .top-tab:hover { color: var(--text); }
+  .top-tab.active { color: var(--red); border-bottom-color: var(--red); font-weight: 500; }
+  .main { max-width: 960px; margin: 0 auto; padding: 24px; }
+  .section { display: none; }
+  .section.active { display: block; }
+  .domain-nav { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 20px; }
+  .domain-chip { padding: 5px 14px; border-radius: 20px; border: 1px solid var(--border); background: var(--surface); font-size: 12px; cursor: pointer; transition: all 0.15s; color: var(--text-muted); white-space: nowrap; }
+  .domain-chip:hover { border-color: var(--red); color: var(--red); }
+  .domain-chip.active { background: var(--red); border-color: var(--red); color: white; }
+  .domain-card { display: none; }
+  .domain-card.active { display: block; }
+  .guide-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 24px; margin-bottom: 16px; }
+  .guide-card-header { display: flex; align-items: center; gap: 12px; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--border); }
+  .guide-icon { width: 38px; height: 38px; border-radius: var(--radius); background: var(--red-light); display: flex; align-items: center; justify-content: center; font-size: 17px; flex-shrink: 0; }
+  .guide-card-header h2 { font-size: 16px; font-weight: 500; }
+  .guide-card-header p { font-size: 12px; color: var(--text-muted); margin-top: 2px; }
+  .nav-path { display: flex; align-items: center; gap: 6px; font-size: 12px; font-family: var(--mono); background: var(--nav-bg); color: #a8c4e0; padding: 8px 14px; border-radius: var(--radius); margin: 12px 0; flex-wrap: wrap; }
+  .nav-path .sep { color: #4a7fa8; }
+  .nav-path .current { color: #7dd3fc; font-weight: 500; }
+  .sop { margin: 14px 0; }
+  .sop-title { font-size: 13px; font-weight: 500; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 10px; }
+  .step { display: flex; gap: 12px; align-items: flex-start; padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .step:last-child { border-bottom: none; }
+  .step-num { width: 24px; height: 24px; border-radius: 50%; background: var(--red); color: white; display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 2px; }
+  .step-text { font-size: 14px; line-height: 1.6; flex: 1; }
+  .step-text strong { font-weight: 500; }
+  .step-text code { font-family: var(--mono); font-size: 12px; background: var(--bg); padding: 1px 5px; border-radius: 4px; border: 1px solid var(--border); color: var(--red); }
+  .tip { background: var(--amber-bg); border: 1px solid rgba(133,79,11,0.15); border-radius: var(--radius); padding: 10px 14px; margin: 12px 0; font-size: 13px; color: var(--amber); }
+  .tip::before { content: "Exam tip  "; font-weight: 600; }
+  .info { background: var(--info-bg); border: 1px solid rgba(24,95,165,0.15); border-radius: var(--radius); padding: 10px 14px; margin: 12px 0; font-size: 13px; color: var(--info); }
+  .warn { background: var(--red-light); border: 1px solid rgba(163,45,45,0.15); border-radius: var(--radius); padding: 10px 14px; margin: 12px 0; font-size: 13px; color: var(--red); }
+  .success-box { background: var(--success-bg); border: 1px solid rgba(59,109,17,0.15); border-radius: var(--radius); padding: 10px 14px; margin: 12px 0; font-size: 13px; color: var(--success); }
+  h3.sub { font-size: 14px; font-weight: 500; margin: 18px 0 10px; border-left: 3px solid var(--red); padding-left: 10px; }
+  .table-wrap { overflow-x: auto; margin: 12px 0; }
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  th { background: var(--bg); padding: 8px 12px; text-align: left; font-weight: 500; border-bottom: 1px solid var(--border); }
+  td { padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 12px 0; }
+  .mini-card { background: var(--bg); border-radius: var(--radius); padding: 12px 14px; border: 1px solid var(--border); }
+  .mini-card .mc-title { font-size: 12px; font-weight: 600; color: var(--red); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 8px; }
+  .mini-card ul { font-size: 13px; padding-left: 16px; }
+  .mini-card li { margin-bottom: 4px; }
+  @media(max-width:600px) { .two-col { grid-template-columns: 1fr; } }
+  /* QUIZ */
+  .quiz-progress { display: flex; align-items: center; gap: 12px; margin-bottom: 22px; }
+  .progress-bar { flex: 1; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--red); border-radius: 3px; transition: width 0.3s; }
+  .progress-text { font-size: 13px; color: var(--text-muted); font-family: var(--mono); white-space: nowrap; }
+  .quiz-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 26px; margin-bottom: 14px; }
+  .q-number { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 6px; font-family: var(--mono); }
+  .q-tag { display: inline-block; font-size: 11px; background: var(--red-light); color: var(--red); padding: 2px 8px; border-radius: 4px; margin-bottom: 10px; }
+  .q-text { font-size: 15px; font-weight: 500; margin-bottom: 16px; line-height: 1.55; }
+  .multi-hint { font-size: 12px; color: var(--text-muted); margin-bottom: 10px; font-style: italic; }
+  .options { display: flex; flex-direction: column; gap: 9px; }
+  .option-btn { width: 100%; text-align: left; padding: 11px 14px; border: 1.5px solid var(--border); border-radius: var(--radius); background: var(--surface); font-family: var(--font); font-size: 14px; cursor: pointer; transition: border-color 0.15s, background 0.15s; display: flex; gap: 11px; align-items: flex-start; color: var(--text); }
+  .option-btn:hover:not(:disabled) { border-color: var(--red); background: var(--red-light); }
+  .option-btn.selected { border-color: var(--red); background: var(--red-light); }
+  .option-btn.correct { border-color: var(--success); background: var(--success-bg); color: var(--success); }
+  .option-btn.incorrect { border-color: var(--danger); background: var(--danger-bg); color: var(--danger); }
+  .option-letter { width: 22px; height: 22px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; font-size: 11px; font-weight: 600; flex-shrink: 0; margin-top: 1px; font-family: var(--mono); }
+  .submit-btn { background: var(--red); color: white; border: none; padding: 9px 22px; border-radius: var(--radius); font-family: var(--font); font-size: 14px; font-weight: 500; cursor: pointer; margin-top: 14px; }
+  .submit-btn:disabled { background: var(--text-hint); cursor: not-allowed; }
+  .explanation { margin-top: 14px; padding: 13px; background: var(--info-bg); border: 1px solid rgba(24,95,165,0.18); border-radius: var(--radius); font-size: 13px; color: var(--info); display: none; line-height: 1.6; }
+  .explanation.show { display: block; }
+  .quiz-nav { display: flex; gap: 10px; margin-top: 14px; }
+  .nav-btn { padding: 7px 16px; border: 1px solid var(--border); border-radius: var(--radius); background: var(--surface); font-family: var(--font); font-size: 13px; cursor: pointer; color: var(--text); transition: all 0.15s; }
+  .nav-btn:hover { border-color: var(--red); color: var(--red); }
+  .nav-btn:disabled { color: var(--text-hint); cursor: not-allowed; }
+  .nav-btn.primary { background: var(--red); color: white; border-color: var(--red); }
+  .score-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 40px; text-align: center; display: none; }
+  .score-card.show { display: block; }
+  .score-big { font-size: 60px; font-weight: 300; color: var(--red); font-family: var(--mono); }
+  .score-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin: 20px 0; }
+  .fact-card { background: var(--bg); border-radius: var(--radius); padding: 12px 14px; border-left: 3px solid var(--red); }
+  .fact-card .label { font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 3px; }
+  .fact-card .value { font-size: 13px; font-weight: 500; }
+  .domain-row { display: flex; align-items: center; gap: 12px; padding: 8px 0; border-bottom: 1px solid var(--border); font-size: 13px; }
+  .domain-row:last-child { border-bottom: none; }
+  .domain-bar-wrap { width: 100px; height: 5px; background: var(--border); border-radius: 3px; overflow: hidden; }
+  .domain-bar { height: 100%; border-radius: 3px; }
+  /* TUTOR */
+  .tutor-area { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); display: flex; flex-direction: column; height: 500px; }
+  .chat-messages { flex: 1; overflow-y: auto; padding: 18px; display: flex; flex-direction: column; gap: 14px; }
+  .msg { max-width: 88%; padding: 11px 15px; border-radius: var(--radius-lg); font-size: 14px; line-height: 1.6; white-space: pre-wrap; }
+  .msg.user { align-self: flex-end; background: var(--red); color: white; border-bottom-right-radius: 4px; }
+  .msg.assistant { align-self: flex-start; background: var(--bg); border: 1px solid var(--border); border-bottom-left-radius: 4px; }
+  .msg.thinking { align-self: flex-start; background: var(--bg); border: 1px solid var(--border); color: var(--text-muted); font-style: italic; font-size: 13px; border-bottom-left-radius: 4px; }
+  .chat-input-row { display: flex; gap: 8px; padding: 12px 14px; border-top: 1px solid var(--border); }
+  .chat-input { flex: 1; border: 1px solid var(--border); border-radius: var(--radius); padding: 8px 12px; font-family: var(--font); font-size: 14px; outline: none; background: var(--bg); }
+  .chat-input:focus { border-color: var(--red); }
+  .chat-send { background: var(--red); color: white; border: none; border-radius: var(--radius); padding: 8px 16px; font-family: var(--font); font-size: 14px; cursor: pointer; }
+  .chat-send:disabled { background: var(--text-hint); cursor: not-allowed; }
+  .quick-questions { display: flex; flex-wrap: wrap; gap: 7px; margin-bottom: 14px; }
+  .quick-q { padding: 5px 12px; border: 1px solid var(--border); border-radius: 20px; background: var(--surface); font-size: 12px; cursor: pointer; color: var(--text-muted); transition: all 0.15s; }
+  .quick-q:hover { border-color: var(--red); color: var(--red); }
+</style>
+</head>
+<body>
+<div class="header">
+  <div class="header-badge">250-602</div>
+  <div>
+    <h1>Carbon Black Cloud — Technical Specialist</h1>
+    <div class="header-sub">6 exam domains · Verified against TechDocs &amp; official study guide</div>
+  </div>
+</div>
+<nav class="top-nav">
+  <button class="top-tab active" onclick="switchTab('guide',this)">Study Guide</button>
+  <button class="top-tab" onclick="switchTab('quiz',this)">Practice Quiz</button>
+  <button class="top-tab" onclick="switchTab('tutor',this)">AI Tutor</button>
+</nav>
+<div class="main">
+  <div class="section active" id="section-guide">
+    <div class="domain-nav" id="domainNav"></div>
+    <div id="domainCards"></div>
+  </div>
+  <div class="section" id="section-quiz">
+    <div class="quiz-progress">
+      <div class="progress-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+      <div class="progress-text" id="progressText">0 / 40</div>
+    </div>
+    <div id="quizArea"></div>
+    <div class="score-card" id="scoreCard">
+      <div class="score-big" id="scoreBig"></div>
+      <div class="score-label" style="font-size:14px;color:var(--text-muted);margin-top:6px;">correct</div>
+      <div style="font-size:18px;font-weight:500;margin-top:14px;" id="scorePass"></div>
+      <div class="score-grid" id="scoreGrid"></div>
+      <div id="domainBreakdown" style="text-align:left;margin-top:16px;"></div>
+      <button class="nav-btn primary" onclick="resetQuiz()" style="margin-top:16px;">Retake</button>
+    </div>
+  </div>
+  <div class="section" id="section-tutor">
+    <p style="font-size:14px;color:var(--text-muted);margin-bottom:14px;">Ask anything about the 250-602 exam domains.</p>
+    <div class="quick-questions" id="quickQuestions"></div>
+    <div class="tutor-area">
+      <div class="chat-messages" id="chatMessages">
+        <div class="msg assistant">Ready Ron. Ask me to explain any concept, walk through a workflow, or quiz you on any of the 6 exam domains.</div>
+      </div>
+      <div class="chat-input-row">
+        <input class="chat-input" id="chatInput" placeholder="e.g. What are the 6 built-in CBC roles and what can each one do?" onkeydown="if(event.key==='Enter')sendChat()" />
+        <button class="chat-send" id="chatSend" onclick="sendChat()">Send</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+const DOMAINS = [
+  {
+    id:'admin', icon:'🖥', title:'CBC Administration', subtitle:'Platform capabilities, roles, users, alerts, response',
+    html:`
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🖥</div><div><h2>Platform Overview</h2><p>What CBC is and what it collects — Source: Official study guide sample questions</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Feature</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Platform type</strong></td><td>Cloud-native SaaS — no on-premises server required</td></tr>
+            <tr><td><strong>Key capabilities</strong></td><td>Real-time endpoint protection AND threat hunting and incident response</td></tr>
+            <tr><td><strong>Data collected</strong></td><td>Process executions, file activity, network connections, registry changes</td></tr>
+            <tr><td><strong>NOT collected</strong></td><td>Clipboard history, keyboard inputs, mouse movements</td></tr>
+            <tr><td><strong>Supported OS</strong></td><td>Windows, macOS, Linux — NOT Chrome OS, Android, iOS</td></tr>
+            <tr><td><strong>Sensor role</strong></td><td>Monitors and reports on endpoint activities — does NOT encrypt data, affect bandwidth, or physically secure devices</td></tr>
+            <tr><td><strong>Verify sensor comms</strong></td><td>CBC console under the sensor's health status</td></tr>
+            <tr><td><strong>Policy change effect</strong></td><td>Updates sensors' configuration on next check-in — no restart required</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tip">The official sample questions test these exact facts. Know: real-time protection + threat hunting are the two key features. Process executions is what CBC collects. Windows and macOS are the two supported OS answers when asked to choose two.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">👥</div><div><h2>Built-in Roles — All 6</h2><p>Source: CBC User Guide / TechDocs</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Role</th><th>What They Can Do</th><th>Key Restrictions</th></tr></thead>
+          <tbody>
+            <tr><td><strong>View All</strong></td><td>View pages, export data, add notes and tags</td><td>Cannot take any action — read-only equivalent</td></tr>
+            <tr><td><strong>Level 1 Analyst</strong></td><td>Triage alerts, place assets in/out of quarantine</td><td>No Live Response</td></tr>
+            <tr><td><strong>Level 2 Analyst</strong></td><td>All Level 1 + Live Response (file/registry changes, quarantine)</td><td>No policy management, no user management</td></tr>
+            <tr><td><strong>Level 3 Analyst</strong></td><td>All Level 2 + process execution, memory dump, removal from endpoints</td><td>No policy management, no user management</td></tr>
+            <tr><td><strong>System Admin</strong></td><td>Daily admin — adding users, managing sensors, enabling bypass</td><td>Cannot use Live Response, cannot change global settings, cannot delete files</td></tr>
+            <tr><td><strong>Super Admin</strong></td><td>All permissions — console setup, Live Response, policy management, API keys, group rules</td><td>None</td></tr>
+          </tbody>
+        </table></div>
+        <div class="warn"><strong>System Admin cannot use Live Response.</strong> This is the most important distinction to know. If a question asks who can manage users but also needs Live Response, the answer is Super Admin — not System Admin.</div>
+        <div class="tip">Level 1 = triage + quarantine only. Level 2 = adds Live Response. The step up from L1 to L2 is specifically Live Response access.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🔔</div><div><h2>Alert Types</h2><p>Source: CBC User Guide — Alert Types page</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Alert Type</th><th>What Generates It</th><th>Key Note</th></tr></thead>
+          <tbody>
+            <tr><td><strong>CB Analytics</strong></td><td>CBC analytics engine — behavioral detection</td><td>Can be triaged. Severity 1–10.</td></tr>
+            <tr><td><strong>Watchlist</strong></td><td>Match against a subscribed or custom watchlist query</td><td>Requires Enterprise EDR. Can be triaged.</td></tr>
+            <tr><td><strong>USB Device Control</strong></td><td>User attempts to access a blocked USB device</td><td><strong>Cannot be triaged or investigated</strong></td></tr>
+            <tr><td><strong>Host-Based Firewall</strong></td><td>Defined firewall rule violated</td><td>Max 100 observations per alert</td></tr>
+            <tr><td><strong>Containers Runtime</strong></td><td>Suspicious behavior per containers runtime policy</td><td>Anomaly or known attack pattern</td></tr>
+            <tr><td><strong>IDS</strong></td><td>Network activity matching known threat signatures</td><td>Max 100 observations per alert</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tip">USB Device Control alerts cannot be triaged or investigated — this is called out specifically in TechDocs. It's a likely exam distractor.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">⚡</div><div><h2>Response Actions</h2><p>Source: CBC User Guide — Module 7: Response Capabilities</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Action</th><th>What It Does</th><th>Key Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Quarantine</strong></td><td>Isolates endpoint from all network traffic except CBC cloud channel</td><td>Live Response still works on quarantined endpoints. Works in bypass mode too.</td></tr>
+            <tr><td><strong>Live Response</strong></td><td>Interactive command shell to the endpoint</td><td>Requires sensor online. Requires role with Live Response permission. Max 100 concurrent sessions, 250 commands per session, 15-min idle timeout.</td></tr>
+            <tr><td><strong>Hash Ban</strong></td><td>Blocks a specific file hash from executing</td><td>Does NOT delete the file from endpoints. Prevention only — does not remove existing copies.</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tip">Official sample Q10: valid response action = Quarantine. Live Query is NOT a response action — it is an investigation/compliance tool.</div>
+      </div>`
+  },
+  {
+    id:'policies', icon:'📋', title:'CBC Policies', subtitle:'Policy components, rules, prevention, local scan',
+    html:`
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">📋</div><div><h2>Policy Fundamentals</h2><p>Source: CBC User Guide — Managing Policies</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Fact</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Default policy</strong></td><td>Standard — all new sensors go here unless a policy is specified at command line install</td></tr>
+            <tr><td><strong>Standard policy</strong></td><td>Cannot be modified — must duplicate it first, then modify the copy</td></tr>
+            <tr><td><strong>Policy change effect</strong></td><td>Updates on sensor's next check-in — no restart needed</td></tr>
+            <tr><td><strong>Policy assignment</strong></td><td>Can be set at command line install, through Asset Group membership, or manually from Inventory page</td></tr>
+            <tr><td><strong>Multiple group membership</strong></td><td>If asset belongs to multiple groups with different policies, highest-ranked policy wins — unless manually assigned (manual always wins)</td></tr>
+          </tbody>
+        </table></div>
+        <div class="warn"><strong>Standard policy cannot be modified.</strong> Broadcom explicitly states: "You cannot modify the Standard policy — duplicate it first." This is a likely exam question.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">⚙️</div><div><h2>Policy Components — 4 Tabs</h2><p>Source: Endpoint Standard course Module 4 — Policy Components</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Tab</th><th>What It Controls</th><th>Key Note</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Prevention</strong></td><td>Reputation-based actions per file category — what happens when Known Malware, Suspect Malware, PUP, Adaptive Allowlist, or Not Listed files execute</td><td>Actions: Block, Block &amp; Report, Allow, Allow &amp; Log, Terminate</td></tr>
+            <tr><td><strong>Local Scan</strong></td><td>On-access signature scanning for known malware</td><td><strong>Windows sensors only</strong> — not available on macOS or Linux. Modes: Disabled, Normal (first execute), Aggressive (all executes)</td></tr>
+            <tr><td><strong>Sensor</strong></td><td>Which event types the sensor collects and streams to CBC cloud</td><td>More capabilities = more telemetry = more resource use</td></tr>
+            <tr><td><strong>Rules</strong></td><td>Custom blocking and permission rules beyond reputation handling</td><td>Use Test Rule feature to evaluate impact before deploying</td></tr>
+          </tbody>
+        </table></div>
+        <div class="tip">Local Scan is Windows-only — macOS and Linux sensors do not support it. This is a verified TechDocs fact that could appear on the exam.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🛡</div><div><h2>Core Prevention Rules</h2><p>Source: CBC Getting Started Guide / TechDocs</p></div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text">Core Prevention rules are crafted and published by the Carbon Black Threat Analysis Unit (TAU). They are delivered automatically to sensors without policy changes or sensor updates.</div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text">Core Preventions are enabled by default. Broadcom recommends NOT modifying them.</div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text">If a Core Prevention causes a false positive, you can change the category action from <strong>Alert and Block</strong> (default) to <strong>Alert</strong> only.</div></div>
+        <div class="info"><strong>Test Rule feature:</strong> Use this before deploying any new blocking rule to evaluate what it would match across your environment without actually blocking anything. This is how you evaluate rule impact — the exam objective from Module 5 specifically calls out "Evaluating rule impact."</div>
+      </div>`
+  },
+  {
+    id:'sensors', icon:'📡', title:'CBC Sensors', subtitle:'Requirements, installation, management, validation',
+    html:`
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">📡</div><div><h2>Sensor Installation</h2><p>Source: Plan &amp; Deploy course Modules 4, 6 / CBC Sensor Installation Guide</p></div></div>
+        <div class="nav-path"><span>Inventory</span><span class="sep">→</span><span>Endpoints</span><span class="sep">→</span><span class="current">Sensor Options</span></div>
+        <h3 class="sub">Key Installation Facts</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Fact</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Installer location</strong></td><td>Inventory → Endpoints → Sensor Options</td></tr>
+            <tr><td><strong>Supported platforms</strong></td><td>Windows, macOS, Linux</td></tr>
+            <tr><td><strong>Linux installation</strong></td><td>Command line only — no GUI installer</td></tr>
+            <tr><td><strong>Default policy on install</strong></td><td>Standard — unless alternate policy specified in command line arguments</td></tr>
+            <tr><td><strong>Admin rights required</strong></td><td>Yes — administrator privileges required on the endpoint to install</td></tr>
+            <tr><td><strong>Policy assignment methods</strong></td><td>Command line at install, Asset Group membership, or manual assignment from Inventory page</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🖥</div><div><h2>Managing Sensors</h2><p>Source: Plan &amp; Deploy course Modules 8, 9</p></div></div>
+        <div class="nav-path"><span class="current">Inventory → Endpoints</span></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Task</th><th>How</th></tr></thead>
+          <tbody>
+            <tr><td>View all sensors</td><td>Inventory → Endpoints — filter by status, OS, policy, sensor version</td></tr>
+            <tr><td>Check sensor health</td><td>Inventory → Endpoints — sensor health status column; also accessible from the CBC console sensor detail</td></tr>
+            <tr><td>Change policy assignment</td><td>Select device → change policy group — takes effect on next check-in</td></tr>
+            <tr><td>Quarantine a device</td><td>Select device → Quarantine (also available from Alerts page)</td></tr>
+            <tr><td>Open Live Response</td><td>Select device → Live Response (also available from Alerts, Alert Triage, and Investigate pages)</td></tr>
+            <tr><td>View outdated sensors</td><td>Inventory → Endpoints — sort/filter by Sensor Version column</td></tr>
+          </tbody>
+        </table></div>
+        <div class="info"><strong>Post-deployment validation (Module 9):</strong> Verify sensors appear in Inventory → Endpoints with active status, correct policy assigned, and events flowing to the console.</div>
+        <div class="tip">Official sample Q5: How to verify sensor is communicating properly = within the CBC console under the sensor's health status. NOT system tray, NOT local event viewer.</div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🔄</div><div><h2>Sensor Bypass Mode</h2><p>Source: CBC User Guide — Sensor Bypass Mode</p></div></div>
+        <div class="step"><div class="step-num" style="background:var(--amber)">!</div><div class="step-text">In bypass mode, the sensor stops enforcing policy and uploading events to the CBC console. However it still: logs system info locally, checks in for configuration/policy updates, receives signature updates for local scanner, and checks file reputations locally.</div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text">Live Response can be used on devices in bypass mode OR quarantine — both work.</div></div>
+      </div>`
+  },
+  {
+    id:'livequery', icon:'🔍', title:'Live Query', subtitle:'Osquery, SQL basics, running vs scheduling, recommended queries',
+    html:`
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🔍</div><div><h2>Live Query Overview</h2><p>Source: Audit &amp; Remediation course Modules 2, 3, 4 / official study guide Q7</p></div></div>
+        <div class="tip">Official sample Q7: What module gathers IT compliance information? = <strong>Live Query</strong>. Not Live Response, not Enterprise EDR.</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Fact</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Technology</strong></td><td>Powered by osquery — open source, SQL-based endpoint querying framework</td></tr>
+            <tr><td><strong>Location</strong></td><td>Audit &amp; Remediation section of CBC console</td></tr>
+            <tr><td><strong>Use cases</strong></td><td>IT compliance, asset inventory, configuration auditing, threat hunting at scale</td></tr>
+            <tr><td><strong>Results</strong></td><td>Point-in-time snapshots — current state only, NOT historical data</td></tr>
+            <tr><td><strong>Historical data</strong></td><td>Use Enterprise EDR Process Search — not Live Query</td></tr>
+            <tr><td><strong>Devices tab</strong></td><td>In query results, Devices tab has a direct link to open a Live Response session on that device</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">📊</div><div><h2>Running vs Scheduling</h2><p>Source: Audit &amp; Remediation course Module 3 — Query scope, Running versus scheduling</p></div></div>
+        <div class="two-col">
+          <div class="mini-card"><div class="mc-title">Run (Ad Hoc)</div><ul><li>Executes once immediately</li><li>Returns current point-in-time results</li><li>Good for: spot checks, incident investigation, one-time compliance verification</li></ul></div>
+          <div class="mini-card"><div class="mc-title">Schedule (Recurring)</div><ul><li>Runs on defined interval (hourly, daily, weekly)</li><li>Results stored and accessible by run date under Audit &amp; Remediation → Results</li><li>Good for: continuous compliance monitoring, drift detection</li></ul></div>
+        </div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">💾</div><div><h2>Key osquery Tables</h2><p>Source: Audit &amp; Remediation course Module 3 — Available tables</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Table</th><th>What It Contains</th><th>Example Use</th></tr></thead>
+          <tbody>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">processes</code></td><td>Currently running processes — name, PID, path, cmdline</td><td>Is a specific process running right now?</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">programs</code></td><td>Installed software — name, version</td><td>Is VPN client installed on all endpoints?</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">users</code></td><td>Local user accounts</td><td>Find unexpected local admin accounts</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">listening_ports</code></td><td>Active network listeners — port, protocol, PID</td><td>Find endpoints with unexpected open ports</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">services</code></td><td>Windows services — name, status, start type</td><td>Is a specific service running?</td></tr>
+          </tbody>
+        </table></div>
+      </div>`
+  },
+  {
+    id:'eedr', icon:'🔎', title:'Enterprise EDR', subtitle:'Data flows, searching, watchlists, threat hunting',
+    html:`
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🔎</div><div><h2>Enterprise EDR Overview</h2><p>Source: Enterprise EDR course Modules 2, 3, 4, 6</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Capability</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>What it adds</strong></td><td>Deep historical process telemetry, binary analysis, watchlists, advanced threat hunting — beyond what Endpoint Standard provides</td></tr>
+            <tr><td><strong>Process Search</strong></td><td>Search historical telemetry by process name, hash, command line, parent process, network connection. Location: Investigate → Process Search</td></tr>
+            <tr><td><strong>Binary Analysis</strong></td><td>Examine specific executables — metadata, signing info, prevalence, threat intel context</td></tr>
+            <tr><td><strong>Historical data</strong></td><td>EEDR stores historical process telemetry — use this for "what happened 7 days ago" questions. Live Query only shows current state.</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">👁</div><div><h2>Watchlists</h2><p>Source: Enterprise EDR course Module 4 — Managing Watchlists</p></div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text"><strong>What they are:</strong> Saved threat intelligence queries that run continuously against incoming telemetry. When a match is found, an alert is generated.</div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text"><strong>Two types:</strong> Subscribe to pre-built CB threat intel feeds, or build custom watchlists with your own IOCs and hunt queries.</div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text"><strong>Watchlist alerts:</strong> Configurable — subscribing to a watchlist doesn't automatically generate alerts; alerting must be enabled on the watchlist.</div></div>
+        <div class="step"><div class="step-num" style="background:var(--info)">i</div><div class="step-text"><strong>Watchlists do NOT block</strong> — they detect and alert. For blocking, use prevention rules or hash ban.</div></div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">🎯</div><div><h2>Threat Hunting — Cognitive Attack Loop</h2><p>Source: Enterprise EDR course Module 6</p></div></div>
+        <div class="info">The Cognitive Attack Loop is the structured threat hunting methodology in EEDR: <strong>Form a hypothesis</strong> about attacker behavior → <strong>Search</strong> available telemetry for evidence → <strong>Analyze</strong> findings → <strong>Refine</strong> the hypothesis and repeat. It is analyst-driven, not automated.</div>
+      </div>`
+  },
+  {
+    id:'workload', icon:'☁️', title:'CBC Workload', subtitle:'vCenter integration, deployment, VM management',
+    html:`
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">☁️</div><div><h2>CBC Workload Overview</h2><p>Source: Plan &amp; Deploy Module 7 / CBC Workload User Guide / official study guide Q8</p></div></div>
+        <div class="tip">Official sample Q8: What integration is required for CBC Workload? = <strong>VMware vCenter</strong>. Not Hyper-V, not containers, not cloud provider.</div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Fact</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Required integration</strong></td><td>VMware vCenter — provides VM inventory discovery and management context</td></tr>
+            <tr><td><strong>Is it agentless?</strong></td><td>No — CBC sensor must be installed inside each VM's guest OS. vCenter provides management context, not protection.</td></tr>
+            <tr><td><strong>VMware Tools</strong></td><td>Required inside the VM guest OS for remote sensor deployment from the CBC console. Without it, must install manually.</td></tr>
+            <tr><td><strong>vMotion</strong></td><td>Transparent to CBC sensor — sensor keeps running, registration and policy unchanged</td></tr>
+            <tr><td><strong>Quarantine on VM</strong></td><td>Isolates the guest OS network only — ESXi host and other VMs on same host are unaffected</td></tr>
+            <tr><td><strong>Vulnerability data</strong></td><td>CBC Workload surfaces CVE data per VM — CBC identifies CVEs but does NOT patch. Remediation is through your patch management tooling.</td></tr>
+            <tr><td><strong>Snapshot revert</strong></td><td>If reverted to snapshot taken before sensor install, sensor is gone — must redeploy</td></tr>
+          </tbody>
+        </table></div>
+      </div>
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">📦</div><div><h2>Sensor Deployment to VMs</h2><p>Source: CBC Workload User Guide</p></div></div>
+        <div class="two-col">
+          <div class="mini-card"><div class="mc-title">From CBC Console</div><ul><li>Workloads view → select unmanaged VM → Deploy Sensor</li><li>Requires VMware Tools in guest OS</li><li>Select sensor version and policy group</li><li>VM transitions from Unmanaged → Active</li></ul></div>
+          <div class="mini-card"><div class="mc-title">Template-Based (VDI at scale)</div><ul><li>Install sensor in golden image/template</li><li>Run sensor prep script to clear unique identity</li><li>Each clone registers as new unique agent on first boot</li><li>Used for Horizon, Citrix environments</li></ul></div>
+        </div>
+        <div class="info"><strong>Managed vs Unmanaged:</strong> After connecting vCenter, all VMs appear in the Workloads view. Managed = sensor installed. Unmanaged = VM exists in vCenter but no CBC sensor installed.</div>
+      </div>`
+  },
+  {
+    id:'liveresponse', icon:'💻', title:'Live Response', subtitle:'Commands, sessions, logging, requirements',
+    html:`
+      <div class="guide-card">
+        <div class="guide-card-header"><div class="guide-icon">💻</div><div><h2>Live Response</h2><p>Source: CBC User Guide — Using Live Response / TechDocs</p></div></div>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Fact</th><th>Detail</th></tr></thead>
+          <tbody>
+            <tr><td><strong>Access from</strong></td><td>Inventory → Endpoints, OR Alerts page, OR Alert Triage page, OR Investigate page</td></tr>
+            <tr><td><strong>Role required</strong></td><td>Minimum Level 2 Analyst (has Live Response permission)</td></tr>
+            <tr><td><strong>Sensor requirement</strong></td><td>Policy must have Live Response enabled</td></tr>
+            <tr><td><strong>Works on quarantined?</strong></td><td>Yes — quarantine preserves the CBC cloud channel which Live Response uses</td></tr>
+            <tr><td><strong>Works in bypass mode?</strong></td><td>Yes — confirmed in TechDocs</td></tr>
+            <tr><td><strong>Concurrent sessions</strong></td><td>Maximum 100 simultaneous sessions</td></tr>
+            <tr><td><strong>Commands per session</strong></td><td>Maximum 250 commands</td></tr>
+            <tr><td><strong>Idle timeout</strong></td><td>15 minutes of inactivity</td></tr>
+            <tr><td><strong>Session logging</strong></td><td>Commands logged in CBC audit log in the UI, and also on the endpoint</td></tr>
+          </tbody>
+        </table></div>
+        <h3 class="sub">Live Response Commands</h3>
+        <div class="table-wrap"><table>
+          <thead><tr><th>Command</th><th>What It Does</th></tr></thead>
+          <tbody>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">get [filepath]</code></td><td>Pull a file FROM the endpoint to the analyst's workstation</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">put [localfile]</code></td><td>Push a file TO the endpoint</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">ps</code></td><td>List running processes</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">kill [PID]</code></td><td>Kill a process by PID</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">dir</code></td><td>List directory contents</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">delete [filepath]</code></td><td>Delete a file on the endpoint</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">execfg "[full path]"</code></td><td>Execute an OS binary and return output. Requires fully qualified path (e.g. "C:\Windows\System32\netstat.exe")</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">exec "[full path]"</code></td><td>Execute an OS binary silently — no output returned</td></tr>
+            <tr><td><code style="font-family:var(--mono);font-size:12px;background:var(--bg);padding:1px 5px;border-radius:4px;border:1px solid var(--border);color:var(--red)">memdump</code></td><td>Capture memory from the endpoint</td></tr>
+          </tbody>
+        </table></div>
+        <div class="warn"><strong>execfg requires fully qualified paths</strong> — per TechDocs (sensor 4.0.2.1540+), providing just the binary name risks privilege escalation. Use the full path: <code style="font-size:12px">execfg "C:\Windows\System32\netstat.exe" -an</code></div>
+      </div>`
+  }
+];
+
+// 40 questions — only from verified sources
+const QUESTIONS = [
+  // === OFFICIAL SAMPLE QUESTIONS (all 10 — confirmed answers) ===
+  {id:1,domain:'CBC Administration',
+   text:'Which of the following features are offered by the Carbon Black Cloud Platform? (Choose 2)',
+   type:'multi',
+   options:['Real-time endpoint protection','Automated cloud backup','Threat hunting and incident response','Rapid Rules Engine'],
+   correct:[0,2],
+   explanation:'A and C. Per the official study guide: real-time endpoint protection and threat hunting and incident response are the two core CBC platform capabilities. Automated cloud backup is not a CBC function. Rapid Rules Engine is App Control terminology — not CBC.'},
+  {id:2,domain:'CBC Administration',
+   text:'Carbon Black Cloud can collect data on which of the following?',
+   type:'single',
+   options:['Clipboard history','Process Executions','Keyboard inputs','Mouse movements'],
+   correct:[1],
+   explanation:'B. CBC sensors collect process executions, file activity, network connections, and registry changes. They do not collect clipboard history, keyboard inputs, or mouse movements — those are not part of the CBC data model. Source: official study guide sample Q2.'},
+  {id:3,domain:'CBC Sensors',
+   text:'Which operating systems are supported by Carbon Black Cloud sensors? (Choose 2)',
+   type:'multi',
+   options:['Windows','Chrome OS','macOS','Android'],
+   correct:[0,2],
+   explanation:'A and C. CBC sensors support Windows, macOS, and Linux. Chrome OS and Android are not supported. Source: official study guide sample Q3.'},
+  {id:4,domain:'CBC Sensors',
+   text:'How do sensors in Carbon Black Cloud contribute to its security capabilities?',
+   type:'single',
+   options:['By encrypting data stored on the endpoint','By monitoring and reporting on endpoint activities','By increasing the network bandwidth for faster data transfer','By physically securing the endpoint device'],
+   correct:[1],
+   explanation:'B. Sensors monitor and report on endpoint activities — process executions, file events, network connections, registry changes — and stream that telemetry to the CBC cloud for analysis. Source: official study guide sample Q4.'},
+  {id:5,domain:'CBC Sensors',
+   text:'How can an administrator verify that a Carbon Black Cloud sensor is communicating properly with the cloud?',
+   type:'single',
+   options:['Within the Carbon Black Cloud console under the sensor\'s health status','By checking the sensor\'s status in the system tray','Reviewing the local event viewer on the endpoint','Sending a test malware file to the endpoint'],
+   correct:[0],
+   explanation:'A. The authoritative place to verify sensor communication is within the CBC console under the sensor\'s health status. The system tray shows local status only. The event viewer is for OS-level troubleshooting. Sending test malware is not an approved method. Source: official study guide sample Q5.'},
+  {id:6,domain:'CBC Policies',
+   text:'What effect does changing a policy in Carbon Black Cloud have on associated sensors?',
+   type:'single',
+   options:['Updates the sensors\' configuration according to the new policy settings','Immediately disconnects the sensors from the network','Requires a manual restart of sensors to apply the new policy','No effect until the sensor is reinstalled'],
+   correct:[0],
+   explanation:'A. Policy changes are automatically pushed to sensors and take effect on their next check-in. No restart, no reinstall, no manual action required. Source: official study guide sample Q6.'},
+  {id:7,domain:'Live Query',
+   text:'What module within the Carbon Black Cloud platform would gather IT compliance information?',
+   type:'single',
+   options:['Live Response','Enterprise EDR','Live Query','Live Remediation'],
+   correct:[2],
+   explanation:'C. Live Query (Audit & Remediation module) uses osquery SQL queries to gather compliance data fleet-wide. Live Response is for interactive IR sessions. Enterprise EDR is for threat hunting. "Live Remediation" is not a CBC module. Source: official study guide sample Q7.'},
+  {id:8,domain:'CBC Workload',
+   text:'What integration is required for Carbon Black Cloud Workload?',
+   type:'single',
+   options:['VMware vCenter','Hyper-V','Containers','Cloud provider'],
+   correct:[0],
+   explanation:'A. CBC Workload requires VMware vCenter integration for VM inventory discovery and management. Not Hyper-V, not containers, not a generic cloud provider. Source: official study guide sample Q8.'},
+  {id:9,domain:'CBC Policies',
+   text:'Which is the default Carbon Black Cloud policy?',
+   type:'single',
+   options:['Protected','High Enforcement','Standard','Secured'],
+   correct:[2],
+   explanation:'C. The default CBC policy is Standard. All new sensors are assigned to Standard unless an alternate policy is specified at command line installation time. Source: official study guide sample Q9.'},
+  {id:10,domain:'CBC Administration',
+   text:'Which is a valid Carbon Black Cloud response action?',
+   type:'single',
+   options:['Live Query','Quarantine','Reboot','Upgrade'],
+   correct:[1],
+   explanation:'B. Quarantine is a valid CBC response action — it isolates the endpoint from network traffic while maintaining the CBC cloud communication channel. Live Query is an investigation tool, not a response action. Reboot and Upgrade are not CBC console response actions. Source: official study guide sample Q10.'},
+
+  // === VERIFIED FROM TECHDOCS / USER GUIDE ===
+  {id:11,domain:'CBC Administration',
+   text:'A SOC analyst needs to triage alerts and quarantine endpoints but does NOT need Live Response access. Which built-in role is most appropriate?',
+   type:'single',
+   options:['Super Admin','Level 2 Analyst','Level 1 Analyst','View All'],
+   correct:[2],
+   explanation:'C. Level 1 Analyst covers alert triage and quarantine. Level 2 Analyst adds Live Response on top of Level 1 — since Live Response is not required here, Level 1 is the correct minimum. View All is read-only. Source: CBC User Guide — Role Permission Descriptions.'},
+  {id:12,domain:'CBC Administration',
+   text:'Which built-in role allows a user to manage sensors and add users to the console but specifically CANNOT use Live Response?',
+   type:'single',
+   options:['Level 3 Analyst','Super Admin','System Admin','Level 2 Analyst'],
+   correct:[2],
+   explanation:'C. System Admin is responsible for daily admin activities including managing sensors and adding users. Per TechDocs: "Users in this role cannot change global settings, delete files, or use Live Response." Source: CBC User Guide — Role Permission Descriptions.'},
+  {id:13,domain:'CBC Administration',
+   text:'A user assigned the View All role attempts to dismiss a false positive alert. What is the outcome?',
+   type:'single',
+   options:['They can dismiss alerts but cannot quarantine','They cannot dismiss the alert — View All is read-only and cannot modify alert workflow state','They can dismiss alerts and the action is logged automatically','View All users cannot access the Alerts page'],
+   correct:[1],
+   explanation:'B. View All is CBC\'s read-only role — it allows viewing pages and exporting data but cannot take any action that changes state. Dismissing an alert changes its workflow state and requires at minimum Level 1 Analyst. View All can access and view the Alerts page. Source: CBC User Guide — Role Permission Descriptions.'},
+  {id:14,domain:'CBC Administration',
+   text:'An analyst confirms a true positive alert involving a malicious file. They ban the file hash. What does this action do?',
+   type:'single',
+   options:['Removes the file from all endpoints immediately','Blocks that specific file hash from executing across all endpoints in the ban scope going forward','Quarantines all endpoints that have previously executed that hash','Submits the file to CB threat research for analysis'],
+   correct:[1],
+   explanation:'B. Hash banning blocks the specific SHA-256 hash from executing going forward. It does NOT delete the file from endpoints that already have it, does NOT quarantine endpoints, and does NOT automatically submit the file anywhere. If you need to remove the file from existing endpoints, that requires Live Response. Source: CBC User Guide.'},
+  {id:15,domain:'CBC Administration',
+   text:'Which alert type in CBC CANNOT be triaged or investigated from the console?',
+   type:'single',
+   options:['CB Analytics','Watchlist','USB Device Control','IDS'],
+   correct:[2],
+   explanation:'C. Per TechDocs: "USB Device Control alerts cannot be triaged or investigated." When an end user tries to access a blocked USB device, the deny policy action triggers an alert — but the console does not provide triage or investigation capabilities for this alert type. Source: CBC User Guide — Alert Types.'},
+  {id:16,domain:'CBC Policies',
+   text:'An administrator wants to modify the Standard policy to add more restrictive prevention rules. What must they do first?',
+   type:'single',
+   options:['Request edit access from Broadcom support','Duplicate the Standard policy and modify the copy — the Standard policy itself cannot be modified','Switch the Standard policy to an advanced mode to enable editing','Change the policy rank to unlock editing capabilities'],
+   correct:[1],
+   explanation:'B. Per CBC documentation: "You cannot modify the Standard policy — therefore, we recommend that you duplicate the Standard policy so that you can make modifications to the new copied policy." Source: CBC Best Practices Guide / Getting Started Guide.'},
+  {id:17,domain:'CBC Policies',
+   text:'What is the purpose of the Local Scan tab within a CBC policy?',
+   type:'single',
+   options:['It configures which event types the sensor streams to the CBC cloud','It controls on-access signature scanning for known malware on the endpoint','It sets reputation-based actions for different file categories','It defines custom blocking and permission rules'],
+   correct:[1],
+   explanation:'B. The Local Scan tab controls on-access signature scanning using local AV signatures. It has three modes: Disabled (no scanning), Normal (scans on first execute), Aggressive (scans all executes). Important: Local Scan is available on Windows sensors only — not macOS or Linux. Source: CBC User Guide — Configure Local Scan Settings.'},
+  {id:18,domain:'CBC Policies',
+   text:'Local Scan is available on which CBC sensor platforms?',
+   type:'single',
+   options:['Windows, macOS, and Linux','Windows only','Windows and macOS only','macOS and Linux only'],
+   correct:[1],
+   explanation:'B. Per TechDocs: "The local scan feature is only available for Windows sensors 2.0 and later. It is not available for the Audit and Remediation Standalone product, Linux sensors, or macOS sensors." Source: CBC User Guide — Configure Local Scan Settings.'},
+  {id:19,domain:'CBC Policies',
+   text:'A security team wants to evaluate the impact of a new blocking rule before it actively prevents anything. What is the correct approach in CBC?',
+   type:'single',
+   options:['Deploy the rule and watch for help desk tickets over 24 hours','Use the Test Rule feature within the policy to see what the rule would match without blocking','Apply the rule to one test device only by creating a separate policy','Submit the rule configuration to CB support for review before enabling'],
+   correct:[1],
+   explanation:'B. CBC provides a Test Rule feature within the policy configuration to evaluate what a rule would match across your environment without blocking anything. This directly addresses the exam objective from Module 5: "Evaluating rule impact." Source: CBC Best Practices Guide.'},
+  {id:20,domain:'CBC Policies',
+   text:'Core Prevention rules in CBC are created by which team, and how are they delivered to sensors?',
+   type:'single',
+   options:['Created by the customer\'s security team and pushed via policy update','Created by the Carbon Black Threat Analysis Unit (TAU) and delivered automatically to sensors without policy changes or sensor updates','Created by Broadcom Professional Services and deployed quarterly','Created automatically by the CBC AI engine based on observed threats in the customer environment'],
+   correct:[1],
+   explanation:'B. Core Prevention rules are crafted by the Carbon Black Threat Analysis Unit (TAU) and delivered automatically to sensors as new threats emerge — no policy changes or sensor updates required. They are enabled by default and Broadcom recommends not modifying them. Source: CBC Getting Started Guide.'},
+  {id:21,domain:'CBC Sensors',
+   text:'Where in the CBC console does an administrator find the sensor installer for Windows?',
+   type:'single',
+   options:['Downloads (top navigation)','Settings → Sensor Management','Inventory → Endpoints → Sensor Options','Enforce → Sensor Packages'],
+   correct:[2],
+   explanation:'C. Sensor installers are accessed through Inventory → Endpoints → Sensor Options. Source: confirmed by hands-on console experience.'},
+  {id:22,domain:'CBC Sensors',
+   text:'An administrator deploys sensors to 200 new Windows endpoints. The sensors should receive the "Servers" policy rather than the default Standard policy. What is the most direct approach?',
+   type:'single',
+   options:['Manually reassign each sensor to the Servers policy after enrollment','Specify the Servers policy as a command line argument during sensor installation','Edit the Standard policy to match the Servers policy settings','Set Servers as the global default policy in Settings'],
+   correct:[1],
+   explanation:'B. Per CBC Sensor Installation Guide: "By default, each new sensor is initially assigned the Standard policy unless you define an alternate policy during a command line installation." Specifying the policy at install time is the most direct approach — sensors land in the correct policy immediately on enrollment. Source: CBC Sensor Installation Guide.'},
+  {id:23,domain:'CBC Sensors',
+   text:'A sensor\'s policy group assignment is changed in the CBC console. When does the new policy take effect on the endpoint?',
+   type:'single',
+   options:['Immediately — policy changes are pushed in real time','On the next sensor check-in to the CBC cloud','After the endpoint is rebooted','After the sensor is reinstalled'],
+   correct:[1],
+   explanation:'B. Policy changes take effect on the sensor\'s next check-in to the CBC cloud. No reboot, no restart, no reinstall required. Source: official study guide sample Q6 — "Updates the sensors\' configuration according to the new policy settings."'},
+  {id:24,domain:'CBC Sensors',
+   text:'In CBC Workload, a VM is shown as "Unmanaged" in the Workloads view. What does this mean?',
+   type:'single',
+   options:['The VM is powered off and not reachable','The VM exists in vCenter but does not have a CBC sensor installed in its guest OS','The VM is in a different vCenter that CBC cannot access','The VM requires a separate license before it can be protected'],
+   correct:[1],
+   explanation:'B. Unmanaged means the VM is visible to CBC through the vCenter integration but has no CBC sensor installed inside the guest OS. These VMs can be targeted for sensor deployment directly from the Workloads view in the console.'},
+  {id:25,domain:'Live Query',
+   text:'What technology powers Live Query in Carbon Black Cloud?',
+   type:'single',
+   options:['PowerShell Remoting','WMI (Windows Management Instrumentation)','osquery — an open-source SQL-based endpoint query framework','A proprietary Carbon Black query engine'],
+   correct:[2],
+   explanation:'C. Per CBC documentation: "Live Query is powered by osquery.io, an open source project that uses an SQLite interface." Source: CBC Getting Started Guide.'},
+  {id:26,domain:'Live Query',
+   text:'An analyst runs an ad hoc Live Query and does not receive results from 3 of 500 endpoints. What is the most likely reason?',
+   type:'single',
+   options:['Live Query has a built-in limit of 497 concurrent endpoint queries','Those 3 endpoints were offline or had intermittent connectivity when the query was dispatched','Live Query does not support certain OS versions and those endpoints may be running Linux','The query syntax was invalid and only partially executed'],
+   correct:[1],
+   explanation:'B. Live Query requires the endpoint to be connected to CBC cloud to receive and execute the query. Offline or disconnected endpoints will not return results for that run. When they reconnect, any pending queries are dispatched. There is no 497-endpoint limit. Linux is supported by osquery. Source: CBC User Guide.'},
+  {id:27,domain:'Live Query',
+   text:'A compliance team needs a weekly automated inventory of all installed software across managed endpoints. What is the correct approach?',
+   type:'single',
+   options:['Run "SELECT * FROM programs" ad hoc before each weekly compliance meeting','Schedule "SELECT * FROM programs" to run weekly — results stored and accessible by run date in Audit & Remediation','Create a watchlist query that monitors software installation events','Set up a policy rule that logs all software execution events weekly'],
+   correct:[1],
+   explanation:'B. Scheduling a Live Query is the correct approach for recurring compliance needs. Scheduled query results are stored and accessible by run date under Audit & Remediation → Results. Running ad hoc each week is manual. Watchlists are for security alerting. Policy rules are for prevention, not reporting. Source: CBC User Guide.'},
+  {id:28,domain:'Live Query',
+   text:'A Live Query is run against 500 endpoints to find a specific registry key. The analyst wants to immediately investigate one of the 12 endpoints that returned a match. What does the Devices tab in the Live Query results allow them to do?',
+   type:'single',
+   options:['Navigate directly to the device detail page in Endpoints','Open a Live Response session directly on that device','Export only that device\'s results to CSV','Run a follow-up query scoped to just that device automatically'],
+   correct:[1],
+   explanation:'B. In the Live Query results, the Devices tab has a direct link to open a Live Response session on the specific endpoint — without navigating away from the query results. Source: confirmed by hands-on console experience.'},
+  {id:29,domain:'Enterprise EDR',
+   text:'What is the primary difference between Live Query and Enterprise EDR Process Search for investigating endpoint activity?',
+   type:'single',
+   options:['Live Query requires more permissions than EDR Process Search','Live Query shows current point-in-time data only; EDR Process Search queries stored historical telemetry going back days or weeks','EDR Process Search can only search one endpoint at a time; Live Query queries the entire fleet','They are functionally identical — both query the same data store'],
+   correct:[1],
+   explanation:'B. This is the critical distinction: Live Query returns the current state of endpoints at query execution time — point-in-time only. Enterprise EDR Process Search queries historically stored telemetry, allowing you to search for events that occurred days or weeks ago. Source: CBC documentation.'},
+  {id:30,domain:'Enterprise EDR',
+   text:'What is a Watchlist in Carbon Black Cloud Enterprise EDR?',
+   type:'single',
+   options:['A list of endpoints flagged for manual review by an analyst','A saved threat intelligence query that runs continuously against incoming telemetry and generates alerts when matches are found','A list of file hashes that are blocked from executing','A scheduled Live Query for compliance reporting'],
+   correct:[1],
+   explanation:'B. A watchlist is a saved query that runs continuously against new telemetry as it streams in. When incoming data matches the watchlist criteria, an alert is generated. Watchlists can be subscribed from CB threat intel feeds or created custom. They detect — they do not block. Source: CBC User Guide.'},
+  {id:31,domain:'Enterprise EDR',
+   text:'The Cognitive Attack Loop in Enterprise EDR threat hunting describes which type of process?',
+   type:'single',
+   options:['An automated AI loop that detects attacks without analyst input','A structured analyst-driven methodology: form hypothesis → search for evidence → analyze → refine and repeat','The kill chain stages of a malware infection','A machine learning loop that improves watchlist accuracy over time'],
+   correct:[1],
+   explanation:'B. The Cognitive Attack Loop is a structured human-driven threat hunting methodology — not automated. The analyst forms a hypothesis about attacker behavior, searches available telemetry for evidence, analyzes findings, then refines and repeats. Source: Enterprise EDR course Module 6.'},
+  {id:32,domain:'CBC Workload',
+   text:'CBC Workload is described as providing "agentless" protection for virtual machines. Is this accurate?',
+   type:'single',
+   options:['Yes — the vCenter integration provides protection at the hypervisor level without any sensor in the guest OS','No — the CBC sensor must still be installed inside each VM\'s guest OS. vCenter provides management and discovery context, not the protection itself','Yes — VMware Tools replaces the need for a CBC sensor in Workload deployments','No — but a lightweight "micro-agent" is used instead of the full CBC sensor'],
+   correct:[1],
+   explanation:'B. CBC Workload is NOT agentless. The full CBC sensor must be installed inside each VM\'s guest OS — this is what provides the actual monitoring and protection. What vCenter adds is VM discovery, inventory organization by datacenter/cluster, and vulnerability management context. Source: CBC Workload User Guide.'},
+  {id:33,domain:'CBC Workload',
+   text:'A VM is vMotioned from one ESXi host to another within the same vCenter. What happens to the CBC sensor running inside the VM?',
+   type:'single',
+   options:['The sensor loses its registration and the VM must be re-enrolled in CBC','The sensor continues running normally — vMotion is transparent to the guest OS and therefore to the CBC sensor','The sensor pauses enforcement during the vMotion and resumes after the VM settles','The VM automatically moves to the default Standard policy after vMotion'],
+   correct:[1],
+   explanation:'B. vMotion is transparent to the CBC sensor. The sensor runs inside the VM\'s guest OS — it has no awareness of which physical ESXi host it is running on. Registration, policy assignment, and enforcement continue uninterrupted through vMotion. Source: CBC Workload documentation.'},
+  {id:34,domain:'CBC Workload',
+   text:'What is required inside a VM\'s guest OS for an administrator to remotely deploy a CBC sensor to it from the CBC Workload console?',
+   type:'single',
+   options:['The VM must be running Windows — remote deployment supports Windows only','VMware Tools must be installed and running inside the guest OS','An SSH key must be pre-configured on the VM','The VM must be in a designated vCenter cluster for CBC Workload'],
+   correct:[1],
+   explanation:'B. VMware Tools must be installed and running inside the VM guest OS. CBC uses the VMware Tools communication channel to push the sensor installer into the guest. Without it, the admin must manually install the sensor inside the guest OS just like a standard endpoint deployment. Source: CBC Workload User Guide.'},
+  {id:35,domain:'Live Response',
+   text:'An endpoint has been quarantined due to a confirmed malware infection. An analyst needs to pull a suspicious file from that endpoint for forensic analysis. Can they open a Live Response session?',
+   type:'single',
+   options:['No — quarantine severs all connectivity including CBC, making Live Response impossible','Yes — quarantine blocks all network traffic except the CBC cloud communication channel, which Live Response uses','Yes — but Live Response is read-only on quarantined endpoints','No — the quarantine must be lifted first'],
+   correct:[1],
+   explanation:'B. Quarantine preserves the CBC cloud communication channel specifically. Live Response runs over that preserved channel and works normally on quarantined endpoints. Per TechDocs: "Live Response can be used on devices in bypass mode or quarantine." Source: CBC User Guide.'},
+  {id:36,domain:'Live Response',
+   text:'During a Live Response session, an analyst needs to pull a file from the endpoint back to their workstation for forensic analysis. Which command do they use?',
+   type:'single',
+   options:['download C:\\path\\to\\file.exe','cp C:\\path\\to\\file.exe','get C:\\path\\to\\file.exe','pull C:\\path\\to\\file.exe'],
+   correct:[2],
+   explanation:'C. The "get" command in CBC Live Response pulls a file FROM the endpoint to the analyst\'s workstation. "download" and "pull" are not valid Live Response commands. "cp" is a Unix copy command. Source: CBC User Guide — Live Response Commands.'},
+  {id:37,domain:'Live Response',
+   text:'Where are CBC Live Response session commands logged for audit purposes?',
+   type:'single',
+   options:['Only in the local Windows Event Log on the endpoint','In the CBC audit log in the console UI — commands also exist on the endpoint itself','In a dedicated Live Response session log accessible from the device detail page','Sessions are not logged — Live Response is a real-time session with no audit trail'],
+   correct:[1],
+   explanation:'B. Live Response commands are recorded in the CBC audit log in the console UI. This is not a separate standalone Live Response log — the commands appear within the CBC audit log. The log also exists on the endpoint. Sessions are absolutely logged — this is critical for forensic integrity. Source: confirmed by hands-on experience and TechDocs.'},
+  {id:38,domain:'Live Response',
+   text:'An analyst needs to execute the Windows netstat utility during a Live Response session and see the output. Which command syntax is correct per CBC documentation?',
+   type:'single',
+   options:['netstat -an','exec netstat -an','execfg "C:\\Windows\\System32\\netstat.exe" -an','run netstat'],
+   correct:[2],
+   explanation:'C. "execfg" is the CBC Live Response command to execute an OS binary and return output to the session. Per TechDocs, a fully qualified path is required (sensor 4.0.2.1540+) to prevent privilege escalation via PATH manipulation. Plain "netstat" without the full path and execfg prefix will not work correctly. Source: CBC User Guide — Live Response Considerations.'},
+  {id:39,domain:'CBC Administration',
+   text:'An analyst dismisses an alert as a false positive. Two days later they realize it was actually a true positive. What can they do?',
+   type:'single',
+   options:['Nothing — dismissed alerts are permanently deleted','Re-open the alert from the closed/dismissed alerts view and take response actions from there','The incident must be handled entirely outside CBC — alerts cannot be re-opened','Create a new alert by triggering the same detection again'],
+   correct:[1],
+   explanation:'B. Dismissed alerts are not deleted — they move to a closed/dismissed state and remain accessible. An analyst can filter for closed alerts, find the dismissed alert, re-open it, and take response actions. The full audit trail of who dismissed it and when is preserved. Source: CBC User Guide.'},
+  {id:40,domain:'CBC Workload',
+   text:'What vulnerability management capability does CBC Workload provide, and what does CBC do when a critical CVE is identified?',
+   type:'single',
+   options:['CBC Workload automatically patches vulnerable applications when a critical CVE is detected','CBC Workload surfaces CVE data per VM — CBC identifies and displays CVEs but does NOT patch. Remediation happens through separate patch management tooling.','CBC Workload runs vulnerability scans on the ESXi hypervisor only — guest OS vulnerabilities require a separate scanner','CBC Workload only shows CVEs that have triggered a CB Analytics alert'],
+   correct:[1],
+   explanation:'B. CBC Workload surfaces CVE data for software installed in VMs — showing CVE ID, CVSS severity score, affected application and version. CBC identifies and displays vulnerabilities but does not patch. Remediation requires separate patch management tooling (WSUS, SCCM, etc.). Source: CBC Workload User Guide.'}
+];
+
+function switchTab(tab, el) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.top-tab').forEach(t => t.classList.remove('active'));
+  document.getElementById('section-' + tab).classList.add('active');
+  el.classList.add('active');
+}
+
+function buildStudyGuide() {
+  const nav = document.getElementById('domainNav');
+  const cards = document.getElementById('domainCards');
+  DOMAINS.forEach((d, i) => {
+    const chip = document.createElement('button');
+    chip.className = 'domain-chip' + (i === 0 ? ' active' : '');
+    chip.textContent = d.title;
+    chip.onclick = () => selectDomain(d.id);
+    nav.appendChild(chip);
+    const card = document.createElement('div');
+    card.className = 'domain-card' + (i === 0 ? ' active' : '');
+    card.id = 'domain-' + d.id;
+    card.innerHTML = d.html;
+    cards.appendChild(card);
+  });
+}
+
+function selectDomain(id) {
+  document.querySelectorAll('.domain-chip').forEach((c,i) => c.classList.toggle('active', DOMAINS[i].id === id));
+  document.querySelectorAll('.domain-card').forEach(c => c.classList.toggle('active', c.id === 'domain-' + id));
+}
+
+let currentQ = 0, answers = {}, submitted = {}, score = 0;
+function buildQuiz() { renderQuestion(0); }
+
+function renderQuestion(idx) {
+  const q = QUESTIONS[idx];
+  const area = document.getElementById('quizArea');
+  const done = Object.keys(submitted).length;
+  document.getElementById('progressFill').style.width = (done / QUESTIONS.length * 100) + '%';
+  document.getElementById('progressText').textContent = done + ' / ' + QUESTIONS.length;
+  const isSubmitted = !!submitted[q.id];
+  const ua = answers[q.id] || [];
+  const opts = q.options.map((o, oi) => {
+    let cls = 'option-btn';
+    if (isSubmitted) { if (q.correct.includes(oi)) cls += ' correct'; else if (ua.includes(oi)) cls += ' incorrect'; }
+    else if (ua.includes(oi)) cls += ' selected';
+    return `<button class="${cls}" onclick="selectOption(${q.id},${oi},'${q.type}')" ${isSubmitted?'disabled':''}><span class="option-letter">${String.fromCharCode(65+oi)}</span><span>${o}</span></button>`;
+  }).join('');
+  area.innerHTML = `<div class="quiz-card">
+    <div class="q-number">Question ${idx+1} of ${QUESTIONS.length}</div>
+    <div class="q-tag">${q.domain}</div>
+    ${q.type==='multi'?'<div class="multi-hint">Select all that apply</div>':''}
+    <div class="q-text">${q.text}</div>
+    <div class="options">${opts}</div>
+    ${!isSubmitted?`<button class="submit-btn" id="submitBtn" onclick="submitAnswer(${q.id})" ${ua.length===0?'disabled':''}>Check answer</button>`:''}
+    <div class="explanation ${isSubmitted?'show':''}">${q.explanation}</div>
+  </div>
+  <div class="quiz-nav">
+    <button class="nav-btn" onclick="goQ(${idx-1})" ${idx===0?'disabled':''}>← Previous</button>
+    ${idx < QUESTIONS.length-1 ? `<button class="nav-btn primary" onclick="goQ(${idx+1})">Next →</button>` : `<button class="nav-btn primary" onclick="showScore()">See results</button>`}
+  </div>`;
+}
+
+function selectOption(qid, oi, type) {
+  if (!answers[qid]) answers[qid] = [];
+  if (type==='single') answers[qid]=[oi];
+  else { const i=answers[qid].indexOf(oi); if(i>-1) answers[qid].splice(i,1); else answers[qid].push(oi); }
+  const btn=document.getElementById('submitBtn');
+  if(btn) btn.disabled=answers[qid].length===0;
+  renderQuestion(currentQ);
+}
+
+function submitAnswer(qid) {
+  const q=QUESTIONS.find(q=>q.id===qid);
+  const ua=answers[qid]||[];
+  const ok=JSON.stringify(ua.slice().sort())===JSON.stringify(q.correct.slice().sort());
+  submitted[qid]={correct:ok};
+  if(ok) score++;
+  renderQuestion(currentQ);
+}
+
+function goQ(idx) { currentQ=idx; renderQuestion(idx); }
+
+function showScore() {
+  document.getElementById('quizArea').style.display='none';
+  const sc=document.getElementById('scoreCard'); sc.classList.add('show');
+  const pct=Math.round(score/QUESTIONS.length*100);
+  document.getElementById('scoreBig').textContent=score+'/'+QUESTIONS.length;
+  const pass=document.getElementById('scorePass');
+  pass.textContent=pct>=80?'✓ Strong — you know this material':'Review the domains below and retake';
+  pass.style.color=pct>=80?'var(--success)':'var(--danger)';
+  document.getElementById('scoreGrid').innerHTML=`
+    <div class="fact-card"><div class="label">Score</div><div class="value">${pct}%</div></div>
+    <div class="fact-card"><div class="label">Correct</div><div class="value">${score}</div></div>
+    <div class="fact-card"><div class="label">Missed</div><div class="value">${QUESTIONS.length-score}</div></div>`;
+  const ds={};
+  QUESTIONS.forEach(q=>{ if(!ds[q.domain]) ds[q.domain]={c:0,t:0}; ds[q.domain].t++; if(submitted[q.id]?.correct) ds[q.domain].c++; });
+  let html='<h3 style="font-size:14px;font-weight:500;margin-bottom:12px;">By domain</h3>';
+  Object.entries(ds).sort((a,b)=>(a[1].c/a[1].t)-(b[1].c/b[1].t)).forEach(([d,s])=>{
+    const p=Math.round(s.c/s.t*100);
+    const col=p===100?'var(--success)':p>=50?'var(--amber)':'var(--danger)';
+    html+=`<div class="domain-row"><span style="flex:1;font-size:13px;">${d}</span><div class="domain-bar-wrap"><div class="domain-bar" style="width:${p}%;background:${col};"></div></div><span style="font-size:13px;font-family:var(--mono);font-weight:500;color:${col};min-width:32px;text-align:right;">${s.c}/${s.t}</span></div>`;
+  });
+  document.getElementById('domainBreakdown').innerHTML=html;
+}
+
+function resetQuiz() {
+  currentQ=0; answers={}; submitted={}; score=0;
+  document.getElementById('quizArea').style.display='';
+  document.getElementById('scoreCard').classList.remove('show');
+  document.getElementById('progressFill').style.width='0%';
+  document.getElementById('progressText').textContent='0 / '+QUESTIONS.length;
+  renderQuestion(0);
+}
+
+const QUICK_QS=[
+  'What are the 6 built-in CBC roles and what can each one do?',
+  'What is the difference between Level 1 and Level 2 Analyst?',
+  'Which alert type cannot be triaged or investigated?',
+  'What is the difference between Live Query and EEDR Process Search?',
+  'Walk me through all 10 official sample questions and answers',
+  'What does CBC Workload require and what does it add?',
+  'What are the 4 policy tabs and what does each control?',
+  'What does quarantine do and does Live Response still work on a quarantined endpoint?'
+];
+
+function buildTutor() {
+  const qqs=document.getElementById('quickQuestions');
+  QUICK_QS.forEach(q=>{
+    const btn=document.createElement('button');
+    btn.className='quick-q'; btn.textContent=q;
+    btn.onclick=()=>{ document.getElementById('chatInput').value=q; sendChat(); };
+    qqs.appendChild(btn);
+  });
+}
+
+let chatHistory=[];
+async function sendChat() {
+  const input=document.getElementById('chatInput');
+  const sendBtn=document.getElementById('chatSend');
+  const msgs=document.getElementById('chatMessages');
+  const text=input.value.trim(); if(!text) return;
+  input.value=''; sendBtn.disabled=true;
+  const um=document.createElement('div'); um.className='msg user'; um.textContent=text;
+  msgs.appendChild(um); msgs.scrollTop=msgs.scrollHeight;
+  chatHistory.push({role:'user',content:text});
+  const th=document.createElement('div'); th.className='msg thinking'; th.textContent='Thinking...';
+  msgs.appendChild(th); msgs.scrollTop=msgs.scrollHeight;
+  try {
+    const resp=await fetch('https://api.anthropic.com/v1/messages',{
+      method:'POST',headers:{'Content-Type':'application/json'},
+      body:JSON.stringify({
+        model:'claude-sonnet-4-20250514',max_tokens:1000,
+        system:`You are a focused exam prep tutor helping Ron Villagomez pass the Broadcom 250-602 Carbon Black Cloud Technical Specialist exam. Base answers ONLY on the official study guide and TechDocs. Key verified facts:
+
+PLATFORM: Cloud-native SaaS. Features: real-time endpoint protection + threat hunting/IR. Collects: process executions, file activity, network connections, registry. NOT: clipboard, keyboard, mouse. Supported OS: Windows, macOS, Linux. Verify sensor comms: CBC console sensor health status. Policy changes update on next check-in, no restart needed.
+
+ROLES (6 built-in): View All (view/export only, no actions). Level 1 Analyst (triage alerts, quarantine — NO Live Response). Level 2 Analyst (Level 1 + Live Response file/registry changes). Level 3 Analyst (Level 2 + process execution, memdump). System Admin (manage users/sensors/bypass — NO Live Response, NO global settings). Super Admin (all permissions).
+
+POLICIES: Default = Standard. Standard cannot be modified — must duplicate first. Policy tabs: Prevention (reputation actions: Block, Block & Report, Allow, Allow & Log, Terminate — NO standalone "Report" action), Local Scan (Windows only — not macOS/Linux; modes: Disabled/Normal/Aggressive), Sensor (telemetry collection), Rules (custom rules). Core Prevention rules from TAU — delivered automatically. Test Rule feature to evaluate impact before deploying. Policy assigned at command line install, via Asset Groups, or manually.
+
+SENSORS: Installer at Inventory → Endpoints → Sensor Options. Windows/macOS GUI install, Linux command line only. Admin rights required. Policy at install via command line arg.
+
+ALERT TYPES: CB Analytics (behavioral, severity 1-10, can triage). Watchlist (EEDR required, can triage). USB Device Control (CANNOT be triaged or investigated). Host-Based Firewall. Containers Runtime. IDS.
+
+RESPONSE: Quarantine (isolates network, keeps CBC channel open, Live Response still works). Hash Ban (blocks execution, does NOT delete files). Live Response (Level 2+ role required, works on quarantined AND bypass mode, max 100 sessions, 250 commands, 15-min idle timeout, commands logged in CBC audit log AND on endpoint). Commands: get (pull file from endpoint), put (upload to endpoint), ps, kill [PID], dir, delete, execfg "full\path" (requires fully qualified path), exec, memdump.
+
+LIVE QUERY: Audit & Remediation. Powered by osquery. Point-in-time snapshots only — NOT historical. Run=ad hoc, Schedule=recurring stored results. Devices tab in results has Live Response link. Tables: processes, programs, users, listening_ports, services.
+
+ENTERPRISE EDR: Adds historical process telemetry, binary analysis, watchlists (saved queries running continuously, alert on match, do NOT block), Cognitive Attack Loop (hypothesis→search→analyze→refine, analyst-driven). Process Search in Investigate for historical data.
+
+CBC WORKLOAD: Requires VMware vCenter. NOT agentless — sensor in guest OS. VMware Tools required for remote console deployment. vMotion transparent to sensor. Quarantine isolates guest only not ESXi host. CVE data displayed per VM, CBC does NOT patch. Snapshot revert to pre-install state = sensor gone. Unmanaged = exists in vCenter but no sensor.
+
+OFFICIAL SAMPLE ANSWERS: Q1=A,C Q2=B Q3=A,C Q4=B Q5=A Q6=A Q7=C Q8=A Q9=C Q10=B`,
+        messages:chatHistory
+      })
+    });
+    const data=await resp.json();
+    const reply=data.content?.find(b=>b.type==='text')?.text||'No response.';
+    chatHistory.push({role:'assistant',content:reply});
+    th.remove();
+    const am=document.createElement('div'); am.className='msg assistant'; am.textContent=reply;
+    msgs.appendChild(am); msgs.scrollTop=msgs.scrollHeight;
+  } catch(e) { th.textContent='Error — check connection.'; }
+  sendBtn.disabled=false; input.focus();
+}
+
+buildStudyGuide();
+buildQuiz();
+buildTutor();
+</script>
+</body>
+</html>
