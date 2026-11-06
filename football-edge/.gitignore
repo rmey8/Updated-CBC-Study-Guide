@@ -1,5 +1,0 @@
-data/*.db
-data/*.csv
-reports/*
-!reports/.gitkeep
-__pycache__/
